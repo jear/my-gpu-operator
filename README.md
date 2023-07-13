@@ -12,18 +12,20 @@ helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --set op
 # or
 helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace --set operator.upgradeCRD=true --disable-openapi-validation
 
+# Kubevirt notes
+helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace --set operator.upgradeCRD=true --disable-openapi-validation --set sandboxWorkloads.enabled=true
 
 
 
-# Kubevirt and nVidia notes
 # if you can access to nvid.nvidia.com..... Build nVidia vGPU (for kubevirt use case )
 Download the vGPU Software from the NVIDIA Licensing Portal. https://nvid.nvidia.com/dashboard/#/dashboard
 https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#build-vgpu-manager-image
-
 # Install the GPU Operator (without NVIDIA vGPU)
 helm .........  --set sandboxWorkloads.enabled=true
 
-helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace --set operator.upgradeCRD=true --disable-openapi-validation --set sandboxWorkloads.enabled=true
+# Host preparation for PCI Passthrough
+https://kubevirt.io/user-guide/virtual_machines/host-devices/#host-preparation-for-pci-passthrough
+
 
 # kubevirt install https://kubevirt.io/quickstart_cloud/
 echo $VERSION
@@ -44,7 +46,7 @@ https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator
 
 https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices
 
-
+# Get device ID
 ssh worker-gpu-1
 lspci -nnv|grep -i nvidia
 21:00.0 VGA compatible controller [0300]: NVIDIA Corporation GM204GL [Tesla M6] [10de:13f3] (rev a1) (prog-if 00 [VGA controller])
@@ -62,6 +64,31 @@ ssh worker-gpu-2
 	Kernel driver in use: nvidia
 	Kernel modules: nvidiafb, nouveau
 
+# Add device ID to permittedHostDevices ( https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#add-gpu-resources-to-kubevirt-cr )
+kubectl edit kubevirts.kubevirt.io -n kubevirt
+...
+spec:
+  configuration:
+  developerConfiguration:
+    featureGates:
+    - GPU
+  permittedHostDevices:
+    pciHostDevices:
+    - externalResourceProvider: true
+      pciVendorSelector: 10DE:2236
+      resourceName: nvidia.com/GA102GL_A10
+    mediatedDevices:
+    - externalResourceProvider: true
+      mdevNameSelector: NVIDIA A10-24Q
+      resourceName: nvidia.com/NVIDIA_A10-24Q
+...
+
+
+
+
+# label worker GPU nodes ( here to allo vm-passthrough )
+kubectl label node worker-gpu-1 --overwrite nvidia.com/gpu.workload.config=vm-passthrough
+kubectl label node worker-gpu-1 --overwrite nvidia.com/gpu.workload.config=vm-passthrough
 
 
 ```
