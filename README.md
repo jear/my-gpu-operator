@@ -10,6 +10,7 @@ helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --set op
 helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace --set operator.upgradeCRD=true --disable-openapi-validation
 
 # Build nVidia vGPU
+Download the vGPU Software from the NVIDIA Licensing Portal. https://nvid.nvidia.com/dashboard/#/dashboard
 https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#build-vgpu-manager-image
 
 # Kubevirt and nVidia
