@@ -22,6 +22,5 @@ $ helm install --wait --generate-name \
       nvidia/gpu-operator \
       --set sandboxWorkloads.enabled=true
 
-helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace --set operator.upgradeCRD=true --disable-openapi-validation- --set sandboxWorkloads.enabled=true
-
+helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace --set operator.upgradeCRD=true --disable-openapi-validation --set sandboxWorkloads.enabled=true
 ```
