@@ -17,5 +17,11 @@ https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator
 https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices
 https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html
 
+$ helm install --wait --generate-name \
+      -n gpu-operator --create-namespace \
+      nvidia/gpu-operator \
+      --set sandboxWorkloads.enabled=true
+
+helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace --set operator.upgradeCRD=true --disable-openapi-validation- --set sandboxWorkloads.enabled=true
 
 ```
