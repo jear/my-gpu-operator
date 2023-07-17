@@ -127,23 +127,24 @@ kubectl label node worker-gpu-1 --overwrite nvidia.com/gpu.workload.config=vm-pa
 kubectl label node worker-gpu-2 --overwrite nvidia.com/gpu.workload.config=vm-passthrough
 
 k get pods -n gpu-operator 
-NAME                                                          READY   STATUS       RESTARTS   AGE
-gpu-feature-discovery-wgg2t                                   1/1     Running      0          5d1h
-gpu-operator-85949d795c-v4nxg                                 1/1     Running      6          5d1h
-gpu-operator-node-feature-discovery-master-7b7d875f6b-qqhjg   1/1     Running      3          5d1h
-gpu-operator-node-feature-discovery-worker-b24zx              1/1     Running      9          5d1h
-gpu-operator-node-feature-discovery-worker-h9kcj              1/1     Running      3          5d1h
-nvidia-container-toolkit-daemonset-p4m75                      1/1     Running      0          5d1h
-nvidia-cuda-validator-jbdrp                                   0/1     Completed    0          30m
-nvidia-cuda-validator-z6tlf                                   0/1     Completed    0          5d1h
-nvidia-dcgm-exporter-zczh7                                    1/1     Running      0          5d1h
-nvidia-device-plugin-daemonset-99zm6                          1/1     Running      0          5d1h
-nvidia-device-plugin-validator-r4hdj                          0/1     Completed    0          5d1h
-nvidia-device-plugin-validator-znr2z                          0/1     Completed    0          30m
-nvidia-driver-daemonset-svj6d                                 1/1     Running      0          5d1h
-nvidia-operator-validator-s52g7                               1/1     Running      0          5d1h
-nvidia-sandbox-device-plugin-daemonset-xdjqg                  0/1     Init:0/2     0          21s
-nvidia-sandbox-validator-p5dvq                                0/1     Init:Error   2          21s
-nvidia-vfio-manager-sswb8                                     1/1     Running      0          67s
+NAME                                                          READY   STATUS      RESTARTS   AGE
+gpu-feature-discovery-wgg2t                                   1/1     Running     0          5d1h
+gpu-operator-85949d795c-v4nxg                                 1/1     Running     6          5d1h
+gpu-operator-node-feature-discovery-master-7b7d875f6b-qqhjg   1/1     Running     3          5d1h
+gpu-operator-node-feature-discovery-worker-b24zx              1/1     Running     9          5d1h
+gpu-operator-node-feature-discovery-worker-h9kcj              1/1     Running     3          5d1h
+nvidia-container-toolkit-daemonset-p4m75                      1/1     Running     0          5d1h
+nvidia-cuda-validator-jbdrp                                   0/1     Completed   0          31m
+nvidia-cuda-validator-z6tlf                                   0/1     Completed   0          5d1h
+nvidia-dcgm-exporter-zczh7                                    1/1     Running     0          5d1h
+nvidia-device-plugin-daemonset-99zm6                          1/1     Running     0          5d1h
+nvidia-device-plugin-validator-r4hdj                          0/1     Completed   0          5d1h
+nvidia-device-plugin-validator-znr2z                          0/1     Completed   0          31m
+nvidia-driver-daemonset-svj6d                                 1/1     Running     0          5d1h
+nvidia-operator-validator-s52g7                               1/1     Running     0          5d1h
+
+nvidia-sandbox-device-plugin-daemonset-xdjqg                  1/1     Running     0          66s
+nvidia-sandbox-validator-p5dvq                                1/1     Running     0          66s
+nvidia-vfio-manager-sswb8                                     1/1     Running     0          112s
 
 ```
