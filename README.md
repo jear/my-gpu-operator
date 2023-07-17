@@ -92,6 +92,7 @@ spec:
     developerConfiguration:
       featureGates:
       - GPU
+      - DisableMDEVConfiguration
     permittedHostDevices:
       pciHostDevices:
       - externalResourceProvider: true
