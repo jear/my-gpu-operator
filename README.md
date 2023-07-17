@@ -14,15 +14,17 @@ helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create
 
 # Kubevirt notes
 helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace --set operator.upgradeCRD=true --disable-openapi-validation --set sandboxWorkloads.enabled=true
+```
 
-
-
+```
 # if you can access to nvid.nvidia.com..... Build nVidia vGPU (for kubevirt use case )
 Download the vGPU Software from the NVIDIA Licensing Portal. https://nvid.nvidia.com/dashboard/#/dashboard
 https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#build-vgpu-manager-image
 # Install the GPU Operator (without NVIDIA vGPU)
 helm .........  --set sandboxWorkloads.enabled=true
+```
 
+```
 # Host preparation for PCI Passthrough
 https://kubevirt.io/user-guide/virtual_machines/host-devices/#host-preparation-for-pci-passthrough
 
@@ -37,8 +39,10 @@ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${VERSIO
 # uninstall
 kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-cr.yaml
 kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-operator.yaml
+```
 
 
+```
 # Kubevirt and nVidia pGPU ( passthrough GPU )
 
 https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html
@@ -80,6 +84,27 @@ lspci -DD|grep NVIDIA
 
 k get kubevirts.kubevirt.io -n kubevirt kubevirt -o yaml
 
+kubectl edit kubevirts.kubevirt.io -n kubevirt
+...
+spec:
+  configuration:
+  developerConfiguration:
+    featureGates:
+    - GPU
+  permittedHostDevices:
+    pciHostDevices:
+    - externalResourceProvider: true
+      pciVendorSelector: 10DE:13f3
+      resourceName: nvidia.com/GM204GL
+#    mediatedDevices:
+#    - externalResourceProvider: true
+#      mdevNameSelector: NVIDIA A10-24Q
+#      resourceName: nvidia.com/NVIDIA_A10-24Q
+...
+
+```
+
+```
 # patching kubevirt kind
 kubectl patch kubevirt  -n kubevirt kubevirt --type='json' \
         -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "DisableMDEVConfiguration" }]'
@@ -92,28 +117,9 @@ The request is invalid: patch: Invalid value: "[{\"op\":\"add\",\"path\":\"/spec
 # Nested virtualization
 kubectl patch kubevirt -n kubevirt  kubevirt --type=merge \
         --patch '{"spec":{"configuration":{"developerConfiguration":{"useEmulation":true}}}}'
+```
 
-kubectl edit kubevirts.kubevirt.io -n kubevirt
-...
-spec:
-  configuration:
-  developerConfiguration:
-    featureGates:
-    - GPU
-  permittedHostDevices:
-    pciHostDevices:
-    - externalResourceProvider: true
-      pciVendorSelector: 10DE:1143
-      resourceName: nvidia.com/GM204GL
-#    mediatedDevices:
-#    - externalResourceProvider: true
-#      mdevNameSelector: NVIDIA A10-24Q
-#      resourceName: nvidia.com/NVIDIA_A10-24Q
-...
-
-
-
-
+```
 # label worker GPU nodes ( here to allo vm-passthrough )
 kubectl label node worker-gpu-1 --overwrite nvidia.com/gpu.workload.config=vm-passthrough
 kubectl label node worker-gpu-1 --overwrite nvidia.com/gpu.workload.config=vm-passthrough
