@@ -69,7 +69,14 @@ ssh worker-gpu-2
 	Kernel driver in use: nvidia
 	Kernel modules: nvidiafb, nouveau
 
-# Add device ID to permittedHostDevices ( https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#add-gpu-resources-to-kubevirt-cr )
+lspci -DD|grep NVIDIA
+0000:23:00.0 VGA compatible controller: NVIDIA Corporation GM204GL [Tesla M6] (rev a1)
+0000:26:00.0 VGA compatible controller: NVIDIA Corporation GM204GL [Tesla M6] (rev a1)
+
+####
+
+# Add device ID to permittedHostDevices
+( https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#add-gpu-resources-to-kubevirt-cr )
 
 k get kubevirts.kubevirt.io -n kubevirt kubevirt -o yaml
 
