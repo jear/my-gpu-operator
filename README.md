@@ -47,6 +47,7 @@ https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator
 https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices
 
 # Get device ID
+####
 ssh worker-gpu-1
 lspci -nnv|grep -i nvidia
 21:00.0 VGA compatible controller [0300]: NVIDIA Corporation GM204GL [Tesla M6] [10de:13f3] (rev a1) (prog-if 00 [VGA controller])
@@ -54,6 +55,10 @@ lspci -nnv|grep -i nvidia
 	Kernel driver in use: nvidia
 	Kernel modules: nvidiafb, nouveau
 
+lspci -DD|grep NVIDIA
+0000:21:00.0 VGA compatible controller: NVIDIA Corporation GM204GL [Tesla M6] (rev a1)
+
+####
 ssh worker-gpu-2
 23:00.0 VGA compatible controller [0300]: NVIDIA Corporation GM204GL [Tesla M6] [10de:13f3] (rev a1) (prog-if 00 [VGA controller])
 	Subsystem: NVIDIA Corporation GM204GL [Tesla M6] [10de:1143]
@@ -65,6 +70,18 @@ ssh worker-gpu-2
 	Kernel modules: nvidiafb, nouveau
 
 # Add device ID to permittedHostDevices ( https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#add-gpu-resources-to-kubevirt-cr )
+
+k get kubevirts.kubevirt.io -n kubevirt kubevirt -o yaml
+
+# patching kubevirt kind
+kubectl patch kubevirt  -n kubevirt kubevirt --type='json' -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "DisableMDEVConfiguration" }]'
+The request is invalid: the server rejected our request due to an error in our request
+
+kubectl patch kubevirt  -n kubevirt kubevirt --type=merge -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "DisableMDEVConfiguration" }]'
+The request is invalid: patch: Invalid value: "[{\"op\":\"add\",\"path\":\"/spec/configuration/developerConfiguration/featureGates/-\",\"value\":\"DisableMDEVConfiguration\"}]": couldn't get version/kind; json parse error: json: cannot unmarshal array into Go value of type struct { APIVersion string "json:\"apiVersion,omitempty\""; Kind string "json:\"kind,omitempty\"" }
+
+# kubectl -n kubevirt patch kubevirt kubevirt --type=merge --patch '{"spec":{"configuration":{"developerConfiguration":{"useEmulation":true}}}}'
+
 kubectl edit kubevirts.kubevirt.io -n kubevirt
 ...
 spec:
@@ -75,12 +92,12 @@ spec:
   permittedHostDevices:
     pciHostDevices:
     - externalResourceProvider: true
-      pciVendorSelector: 10DE:2236
-      resourceName: nvidia.com/GA102GL_A10
-    mediatedDevices:
-    - externalResourceProvider: true
-      mdevNameSelector: NVIDIA A10-24Q
-      resourceName: nvidia.com/NVIDIA_A10-24Q
+      pciVendorSelector: 10DE:1143
+      resourceName: nvidia.com/GM204GL
+#    mediatedDevices:
+#    - externalResourceProvider: true
+#      mdevNameSelector: NVIDIA A10-24Q
+#      resourceName: nvidia.com/NVIDIA_A10-24Q
 ...
 
 
