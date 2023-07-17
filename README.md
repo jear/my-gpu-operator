@@ -80,6 +80,7 @@ The request is invalid: the server rejected our request due to an error in our r
 kubectl patch kubevirt  -n kubevirt kubevirt --type=merge -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "DisableMDEVConfiguration" }]'
 The request is invalid: patch: Invalid value: "[{\"op\":\"add\",\"path\":\"/spec/configuration/developerConfiguration/featureGates/-\",\"value\":\"DisableMDEVConfiguration\"}]": couldn't get version/kind; json parse error: json: cannot unmarshal array into Go value of type struct { APIVersion string "json:\"apiVersion,omitempty\""; Kind string "json:\"kind,omitempty\"" }
 
+# Nested virtualization
 # kubectl -n kubevirt patch kubevirt kubevirt --type=merge --patch '{"spec":{"configuration":{"developerConfiguration":{"useEmulation":true}}}}'
 
 kubectl edit kubevirts.kubevirt.io -n kubevirt
