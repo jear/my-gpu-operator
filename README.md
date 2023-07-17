@@ -13,12 +13,13 @@ helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --set op
 helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace \
              --set operator.upgradeCRD=true --disable-openapi-validation
 
-# Kubevirt notes
+#  for Kubevirt 
 helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace \
              --set operator.upgradeCRD=true --disable-openapi-validation \
              --set sandboxWorkloads.enabled=true
 ```
 
+# Kubevirt
 ```
 # if you can access to nvid.nvidia.com..... Build nVidia vGPU (for kubevirt use case )
 Download the vGPU Software from the NVIDIA Licensing Portal. https://nvid.nvidia.com/dashboard/#/dashboard
@@ -30,8 +31,9 @@ helm .........  --set sandboxWorkloads.enabled=true
 ```
 # Host preparation for PCI Passthrough
 https://kubevirt.io/user-guide/virtual_machines/host-devices/#host-preparation-for-pci-passthrough
+```
 
-
+```
 # kubevirt install https://kubevirt.io/quickstart_cloud/
 echo $VERSION
 v1.0.0
