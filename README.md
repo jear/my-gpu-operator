@@ -87,19 +87,20 @@ k get kubevirts.kubevirt.io -n kubevirt kubevirt -o yaml
 kubectl edit kubevirts.kubevirt.io -n kubevirt
 ...
 spec:
+  certificateRotateStrategy: {}
   configuration:
-  developerConfiguration:
-    featureGates:
-    - GPU
-  permittedHostDevices:
-    pciHostDevices:
-    - externalResourceProvider: true
-      pciVendorSelector: 10DE:13f3
-      resourceName: nvidia.com/GM204GL
-#    mediatedDevices:
-#    - externalResourceProvider: true
-#      mdevNameSelector: NVIDIA A10-24Q
-#      resourceName: nvidia.com/NVIDIA_A10-24Q
+    developerConfiguration:
+      featureGates:
+      - GPU
+    permittedHostDevices:
+      pciHostDevices:
+      - externalResourceProvider: true
+        pciVendorSelector: 10DE:13f3
+        resourceName: nvidia.com/GM204GL
+#      mediatedDevices:
+#      - externalResourceProvider: true
+#        mdevNameSelector: NVIDIA A10-24Q
+#        resourceName: nvidia.com/NVIDIA_A10-24Q
 ...
 
 ```
