@@ -98,8 +98,10 @@ spec:
       featureGates:
       - GPU
       - DisableMDEVConfiguration
+      - HostDevices
+      - LiveMigration
     permittedHostDevices:
-      pciHostDevices:
+      gpus:
       - externalResourceProvider: true
         pciVendorSelector: 10DE:13f3
         resourceName: nvidia.com/GM204GL
