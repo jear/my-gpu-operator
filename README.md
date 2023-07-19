@@ -83,8 +83,10 @@ lspci -DD|grep NVIDIA
 0000:26:00.0 VGA compatible controller: NVIDIA Corporation GM204GL [Tesla M6] (rev a1)
 
 ####
+# FeatureGate
+( https://kubevirt.io/user-guide/operations/activating_feature_gates/ )
 
-# Add device ID to permittedHostDevices
+# permittedHostDevices
 ( https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#add-gpu-resources-to-kubevirt-cr )
 
 k get kubevirts.kubevirt.io -n kubevirt kubevirt -o yaml
