@@ -107,6 +107,10 @@ spec:
 #      - externalResourceProvider: true
 #        mdevNameSelector: NVIDIA A10-24Q
 #        resourceName: nvidia.com/NVIDIA_A10-24Q
+#      mediatedDevices:
+#      - mdevNameSelector: "GRID T4-1Q"
+#        resourceName: "nvidia.com/GRID_T4-1Q"
+
 ...
 
 ```
