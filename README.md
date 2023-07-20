@@ -13,10 +13,6 @@ helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --set op
 helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace \
              --set operator.upgradeCRD=true --disable-openapi-validation
 
-#  for Kubevirt 
-helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace \
-             --set operator.upgradeCRD=true --disable-openapi-validation \
-             --set sandboxWorkloads.enabled=true
 ```
 
 
