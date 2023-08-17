@@ -4,7 +4,7 @@
 
 ## Provide a name in place of kube-prometheus-stack for `app:` labels
 ##
-nameOverride: ""
+nameOverride: "nvidia-gpu-operator-prometheus"
 
 ## Override the deployment namespace
 ##
@@ -1964,10 +1964,6 @@ prometheus-node-exporter:
 prometheusOperator:
   enabled: true
 
-  ## Number of old replicasets to retain ##
-  ## The default value is 10, 0 will garbage-collect old replicasets ##
-  revisionHistoryLimit: 10
-
   ## Prometheus-Operator v0.39.0 and later support TLS natively.
   ##
   tls:
@@ -2301,13 +2297,6 @@ prometheusOperator:
   # Enable vertical pod autoscaler support for prometheus-operator
   verticalPodAutoscaler:
     enabled: false
-
-    # Recommender responsible for generating recommendation for the object.
-    # List should be empty (then the default recommender will generate the recommendation)
-    # or contain exactly one recommender.
-    # recommenders:
-    # - name: custom-recommender-performance
-
     # List of resources that the vertical pod autoscaler can control. Defaults to cpu and memory
     controlledResources: []
     # Specifies which resource values should be controlled: RequestsOnly or RequestsAndLimits.
@@ -2575,7 +2564,7 @@ prometheus:
 
     ## Service type
     ##
-    type: ClusterIP
+    type: LoadBalancer
 
     ## Additional port to define in the Service
     additionalPorts: []
@@ -3015,7 +3004,7 @@ prometheus:
     ## prometheus resource to be created with selectors based on values in the helm deployment,
     ## which will also match the servicemonitors created
     ##
-    serviceMonitorSelectorNilUsesHelmValues: true
+    serviceMonitorSelectorNilUsesHelmValues: false
 
     ## ServiceMonitors to be selected for target discovery.
     ## If {}, select all ServiceMonitors
@@ -3242,7 +3231,22 @@ prometheus:
     ## The scrape configuration example below will find master nodes, provided they have the name .*mst.*, relabel the
     ## port to 2379 and allow etcd scraping provided it is running on all Kubernetes master nodes
     ##
-    additionalScrapeConfigs: []
+    additionalScrapeConfigs:
+    - job_name: gpu-metrics
+      scrape_interval: 1s
+      metrics_path: /metrics
+      scheme: http
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - gpu-operator
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_node_name]
+        action: replace
+        target_label: kubernetes_node
+
+    #additionalScrapeConfigs: []
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:
     #     - role: node
