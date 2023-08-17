@@ -29,7 +29,7 @@ helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator \
 https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/kube-prometheus.html
 ```
 # kubecost
-helm upgrade --install prometheus-community/kube-prometheus-stack  --namespace prometheus --create-namespace --generate-name \
+helm upgrade --install prometheus-community/kube-prometheus-stack  --namespace prometheus --create-namespace my-prometheus \
              --values ./kube-prometheus-stack.values.nvidia \
              --set prometheus-pushgateway.enabled=false \
              --set alertmanager.enabled=false \
