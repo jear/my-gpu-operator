@@ -15,4 +15,16 @@ helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator --create
 
 ```
 
+```
+https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#gpu-telemetry
 
+helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator \
+--set dcgmExporter.config.name=metrics-config \
+--set dcgmExporter.env[0].name=DCGM_EXPORTER_COLLECTORS \
+--set dcgmExporter.env[0].value=/etc/dcgm-exporter/dcgm-metrics.csv
+
+# setup prometheus
+https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/kube-prometheus.html
+
+
+```
