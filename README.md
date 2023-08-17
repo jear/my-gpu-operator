@@ -22,9 +22,23 @@ helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator \
 --set dcgmExporter.config.name=metrics-config \
 --set dcgmExporter.env[0].name=DCGM_EXPORTER_COLLECTORS \
 --set dcgmExporter.env[0].value=/etc/dcgm-exporter/dcgm-metrics.csv
+```
+
 
 # setup prometheus
 https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/kube-prometheus.html
 
+```
+
+```
+# kubecost
+helm install prometheus-community/kube-prometheus-stack --create-namespace --namespace prometheus --generate-name --values ./kube-prometheus-stack.values.nvidia   --set prometheus-pushgateway.enabled=false   --set alertmanager.enabled=false   -f https://raw.githubusercontent.com/opencost/opencost/develop/kubernetes/prometheus/extraScrapeConfigs.yaml 
+
+
+helm upgrade --install prometheus-community/kube-prometheus-stack  --namespace prometheus --create-namespace --generate-name \
+             --values ./kube-prometheus-stack.values.nvidia \
+             --set prometheus-pushgateway.enabled=false \
+             --set alertmanager.enabled=false \
+             -f https://raw.githubusercontent.com/opencost/opencost/develop/kubernetes/prometheus/extraScrapeConfigs.yaml 
 
 ```
