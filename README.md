@@ -1,9 +1,17 @@
 ```
+lsmod | grep -i nouveau
+dmesg | grep -i nouveau
+
+sudo tee /etc/modules-load.d/ipmi.conf <<< "ipmi_msghandler"     && sudo tee /etc/modprobe.d/blacklist-nouveau.conf <<< "blacklist nouveau"     && sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf <<< "options nouveau modeset=0"
+sudo update-initramfs -u
+sudo init 6
+
+
 # Uninstall operator
 helm delete gpu-operator -n gpu-operator 
 
-k delete -f nvidia.com_clusterpolicies_crd.yaml
-customresourcedefinition.apiextensions.k8s.io "clusterpolicies.nvidia.com" deleted
+# k delete -f nvidia.com_clusterpolicies_crd.yaml
+k delete crd clusterpolicies.nvidia.com nvidiadrivers.nvidia.com
 
 # Install operator
 helm repo add nvidia https://helm.ngc.nvidia.com/nvidia    && helm repo update
